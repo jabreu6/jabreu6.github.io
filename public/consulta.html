@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title> Registro de Propiedades</title>
+        <link href="index.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+        
+        <script>
+            window.onload = function() {
+                $(document).ready(function () {
+                    $.get("http://localhost:8080/received", {
+                        titulo: "titulo"
+                        
+                    },function (data) {
+                        console.log("data")
+                        if (data.statusCode == 200) 
+                        {
+                            console.log("el codigo es 200")
+                            console.log(data.data.length);
+
+                            for(var i=0; i<data.data.length; i++)
+                            {
+                                var tr = `<tr>
+                                <td>`+data.data[i].titulo+`</td>
+                                <td>`+data.data[i].descripcion+`</td>
+                                <td>`+data.data[i].ubicacion+`</td>
+                                <td>`+data.data[i].estado+`</td>
+                                <td>`+data.data[i].precio+`</td>
+                                <td><button class="" id="edit"><img src="img/edit.png" height=12px width=12px /></button></td>
+                                <td><button class="" id="delete"><img src="img/de.png" height=12px width=12px /></button></td>
+                                
+
+                                </tr>`;
+                            $("#cuerpo").append(tr)
+                          }
+                        }
+                        console.log(data)
+                    });
+                });
+            };
+        </script>
+
+        <div class="page">
+            <div class="container">
+                <table class= "tabla">
+                  <thead>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Precio</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                  </thead>
+                  <tbody id="cuerpo" class="filas">
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

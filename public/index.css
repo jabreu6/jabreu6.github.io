@@ -7,6 +7,23 @@ body {
   padding: 20px;
 }
 
+.tabla{
+  background: white;
+  padding: 25px;
+}
+
+thead {
+  text-align: center;
+  width: 200px;
+}
+.filas{
+  border-color: solid red;
+}
+
+.container22{
+  background: red;
+}
+
 .page {
   border-radius: 10px;
   display: flex;

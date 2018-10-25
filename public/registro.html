@@ -11,7 +11,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
         <script>
             $(document).ready(function () {
-                var user, to, subject, text;
+                
                 $("#submit").click(function () {
                     titulo = $("#titulo").val();
                     descripcion = $("#descripcion").val();
@@ -35,9 +35,33 @@
                         precio: precio
                     }, function (data) {
                         console.log("data")
+                        if (data.statusCode == 200) {
+                            console.log("el codigo es 200")
+                        }
                         console.log(data)
                     });
                 });
+
+
+                $("#submit2").click(function () {
+                    
+                    
+                    // $("#message").text("Sending E-mail...Please wait");
+                    $.get("http://localhost:8080/received", {
+                        titulo: "titulo"
+                        
+                    }, function (data) {
+                        console.log("data")
+                        if (data.statusCode == 200) {
+                            console.log("el codigo es 200")
+                        }
+                        console.log(data)
+                    });
+                });
+
+
+
+
             });
         </script>
 
@@ -69,7 +93,7 @@
                         <label for="precio">Precio</label>
                         <input type="text" id="precio">
                         <div class="boton">
-                            <button class="btn warning" id="submit">Registrar</button>
+                            <button class="btn warning" id="submit2">Registrar</button>
                         </div>
                     </div>
                 </div>

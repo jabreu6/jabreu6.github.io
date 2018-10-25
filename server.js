@@ -31,7 +31,7 @@ app.get('/send', function (req, res) {
       console.log('Hasta aqui 200');
       res.status(200).json({
         statusCode: 200,
-        data: data
+        data: "data"
       });
     })
     .catch(function (err) {
@@ -55,6 +55,26 @@ app.get('/send', function (req, res) {
     .catch(function (err) {
       res.status(500).send(err);
     });*/
+
+});
+
+
+app.get('/received', function (req, res) {
+
+     
+    let v =  conn.db.any('SELECT * FROM public.propiedad')
+    .then(function (data) {
+
+        console.log("la dataaaaaaaa de hoy")
+        console.log(data)
+        res.status(200).json({
+            statusCode: 200,
+            data: data
+        });
+    })
+    .catch(function (err) {
+      res.status(500).send(err);
+    });
 
 });
 
