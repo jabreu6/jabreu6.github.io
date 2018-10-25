@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title> Registro de Propiedades</title>
+        <link href="index.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var user, to, subject, text;
+                $("#submit").click(function () {
+                    titulo = $("#titulo").val();
+                    descripcion = $("#descripcion").val();
+                    ubicacion = $("#ubicacion").val();
+                    estado = $("#select").val();
+                    precio = $("#precio").val();
+
+
+                    console.log(titulo)
+                    console.log(descripcion)
+                    console.log(ubicacion)
+                    console.log(estado)
+                    console.log(precio)
+                    
+                    // $("#message").text("Sending E-mail...Please wait");
+                    $.get("http://localhost:8080/send", {
+                        titulo: titulo,
+                        descripcion: descripcion,
+                        ubicacion: ubicacion,
+                        estado: estado,
+                        precio: precio
+                    }, function (data) {
+                        console.log("data")
+                        console.log(data)
+                    });
+                });
+            });
+        </script>
+
+        <!--Modal Trigger Script-->
+        <script>
+            $(document).ready(function(){
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal-trigger').leanModal();
+          });
+        </script>
+
+        <div class="page">
+            <div class="container">
+                <div class="right">
+                    <div class="form">
+                        <label class="label" for="titulo">Título</label>
+                        <input type="text" id="titulo">
+                        <label for="descripcion">Descripción</label>
+                        <textarea class="area" id="descripcion"> </textarea>
+                        <label for="ubicacion">Ubicación</label>
+                        <textarea class="area" id="ubicacion"> </textarea>
+                        <label for="estado">Estado:</label>
+                        <select id="select">
+                            <option value="venta">En Venta</option>
+                            <option value="alquiler">En alquiler</option>
+                            <option value="vendida">Vendida</option>
+                            <option value="alquilada">Alquilada</option>
+                        </select>
+                        <label for="precio">Precio</label>
+                        <input type="text" id="precio">
+                        <div class="boton">
+                            <button class="btn warning" id="submit">Registrar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="left">
+                  <div class="titulo">Registro</div>
+                  <div class="subtitulo">Ingrese los datos de la propiedad que desea registrar</div>
+                </div>
+          </div>
+        </div>
+    </body>
+</html>
