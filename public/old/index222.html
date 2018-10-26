@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title> Registro de Propiedades</title>
+        <link href="index.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    </head>
+    <body>
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var user, to, subject, text;
+                $("#submit").click(function () {
+                    titulo = $("#titulo").val();
+                    descripcion = $("#descripcion").val();
+                    ubicacion = $("#ubicacion").val();
+                    estado = $("#select").val();
+                    precio = $("#precio").val();
+
+
+                    console.log(titulo)
+                    console.log(descripcion)
+                    console.log(ubicacion)
+                    console.log(estado)
+                    console.log(precio)
+                    
+                    // $("#message").text("Sending E-mail...Please wait");
+                    $.get("http://localhost:8080/send", {
+                        titulo: titulo,
+                        descripcion: descripcion,
+                        ubicacion: ubicacion,
+                        estado: estado,
+                        precio: precio
+                    }, function (data) {
+                        console.log("data")
+                        console.log(data)
+                    });
+                });
+            });
+        </script>
+
+        <!--Modal Trigger Script-->
+        <script>
+            $(document).ready(function(){
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal-trigger').leanModal();
+          });
+        </script>
+
+        <div class="page">
+            <!-- <div class="container"> -->
+                <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Consulta</h5>
+    <p class="card-text">Ingrese para consultar las propiedades.</p>
+    <a href="/consulta.html" class="btn btn-primary">Consultar</a>
+  </div>
+</div>
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Registro</h5>
+    <p class="card-text">Ingrese para registrar una nueva propiedad.</p>
+    <a href="/Registro/index.html" class="btn btn-primary">Registrar</a>
+  </div>
+</div>
+
+
+                <!-- <div class="left">
+                  <div class="titulo"><a href="/consulta.html">Consulta</a></div>
+                  <div class="subtitulo">Ingrese para consultar las propiedades</div>
+                </div>
+                
+                <div class="left">
+                  <div class="titulo"><a href="/registro.html">Registro</a></div>
+                  <div class="subtitulo">Ingrese para registrar una nueva propiedad</div>
+                </div> -->
+          </div
+        </div>
+    </body>
+</html>

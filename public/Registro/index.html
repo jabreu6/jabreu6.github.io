@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Registro de Propiedad</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<!-- <link rel="icon" type="image/png" href="images/icons/favicon.ico"/> -->
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css"> -->
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css"> -->
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css"> -->
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css"> -->
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css"> -->
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"> -->
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	<!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
+	<script>
+            $(document).ready(function () {
+                
+                $("#submit").click(function () {
+                    titulo = $("#titulo").val();
+                    descripcion = $("#descripcion").val();
+                    ubicacion = $("#ubicacion").val();
+                    estado = $("#select").val();
+                    precio = $("#precio").val();
+
+
+                    console.log(titulo)
+                    console.log(descripcion)
+                    console.log(ubicacion)
+                    console.log(estado)
+                    console.log(precio)
+                    
+                    // $("#message").text("Sending E-mail...Please wait");
+                    $.get("http://localhost:8080/send", {
+                        titulo: titulo,
+                        descripcion: descripcion,
+                        ubicacion: ubicacion,
+                        estado: estado,
+                        precio: precio
+                    }, function (data) {
+                    	// alert("Registro Creado con Exito!!")
+                    	// alert()
+                        console.log("data")
+                        if (data.statusCode == 200) {
+                            console.log("el codigo es 200")
+                            alert("Registro Creado con Exito!!")
+                        }
+                        console.log(data)
+                    });
+                });
+
+
+                $("#submit2").click(function () {
+                    
+                    
+                    // $("#message").text("Sending E-mail...Please wait");
+                    $.get("http://localhost:8080/received", {
+                        titulo: "titulo"
+                        
+                    }, function (data) {
+                        console.log("data")
+                        if (data.statusCode == 200) {
+                            console.log("el codigo es 200")
+                        }
+                        console.log(data)
+                    });
+                });
+            });
+        </script>
+
+
+	<div class="container-contact100">
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Registrar una Propiedad
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Título es requerido">
+					<label class="label-input100" for="Titulo">Título</label>
+					<input id="titulo" class="input100" type="text" name="Titulo" placeholder="Ingrese el Título...">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Descripción es requerida">
+					<label class="label-input100" for="Descripcion">Descripción</label>
+					<textarea id="descripcion" class="input100" name="Descripcion" placeholder="Ingrese la Descripción..."></textarea>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Ubicación es requerida">
+					<label class="label-input100" for="Ubicacion">Ubicación</label>
+					<textarea id="ubicacion" class="input100" name="Ubicacion" placeholder="Ingrese la Ubicación..."></textarea>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100">
+					<div class="label-input100">Estado</div>
+					<div>
+						<select class="js-select2" name="service" id="select">
+							<option value="venta">En Venta</option>
+							<option value="alquiler">En Alquiler</option>
+							<option value="vendida">Vendida</option>
+							<option value="alquilada">Alquilada</option>
+						</select>
+						<div class="dropDownSelect2"></div>
+					</div>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate="Precio es requerido">
+					<label class="label-input100" for="Precio">Precio</label>
+					<input id="precio" class="input100" type="number"  name="Precio" placeholder="Ingrese el Precio...">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<button class="contact100-form-btn" id="submit">
+						Registrar
+					</button>
+				</div>
+			</form>
+			<div class="contact100-more flex-col-c-m" style="background-image: url('images/fondo1.jpg');"></div>
+		</div>
+	</div>
+
+
+
+
+
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<script>
+		$(".js-select2").each(function(){
+			$(this).select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $(this).next('.dropDownSelect2')
+			});
+		})
+		$(".js-select2").each(function(){
+			$(this).on('select2:open', function (e){
+				$(this).parent().next().addClass('eff-focus-selection');
+			});
+		});
+		$(".js-select2").each(function(){
+			$(this).on('select2:close', function (e){
+				$(this).parent().next().removeClass('eff-focus-selection');
+			});
+		});
+
+	</script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script> -->
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-23581568-13');
+	</script>
+</body>
+</html>

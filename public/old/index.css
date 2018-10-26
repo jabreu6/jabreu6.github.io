@@ -65,7 +65,8 @@ tr, th{
   background-size: cover;
 }
 
-.container {
+.containerr {
+  background: red;
   margin-left: 15%;
   display: flex;
   width: 70%;

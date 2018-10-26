@@ -1,0 +1,88 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+
+
+	window.onload = function() {
+                $(document).ready(function () {
+                    $.get("http://localhost:8080/received", {
+                        titulo: "titulo"
+                        
+                    },function (data) {
+                        console.log("data")
+                        if (data.statusCode == 200) 
+                        {
+                            console.log("el codigo es 200")
+                            console.log(data)
+                            console.log(data.data.length);
+                            data.data = data.data.map(d => {
+                            	d.acciones = ''
+                            	return d
+                            })
+                            $('#table').bootstrapTable({
+						        columns: [{
+						        	field: "titulo",
+						        	align: 'center'
+						        },{
+						        	field: "descripcion",
+						        	align: 'center'
+						        },{
+						        	field: "ubicacion",
+						        	align: 'center'
+						        },{
+						        	field: "estado",
+						        	align: 'center'
+						        },{
+						        	field: "precio",
+						        	align: 'center'
+						        },{
+						        	field: "acciones",
+						        	formatter: (value, row, index) => {
+						        		return [
+						        			'<i class="glyphicon glyphicon-remove"></i> <i class="glyphicon glyphicon-pencil"></i>',
+						        		]
+						        	},
+						        	align: 'center'	
+						        }],
+						        data: data.data
+						    });
+                            
+                        }
+                        
+                    });
+                });
+            };
+	var $table = $('#table');
+
+
+</script>
+<head>
+    <title>Consulta de Propiedades</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+    <link rel="stylesheet" href="css/main.css" >
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+</head>
+<body>
+	<div class="app">
+		<div class="container center">
+	        <table id="table" data-height="460">
+	        <thead>
+	            <tr>
+	                <th data-field="titulo">titulo</th>
+	                <th data-field="descripcion">descripcion</th>
+	                <th data-field="ubicacion">ubicacion</th>
+	                <th data-field="estado">estado</th>
+	                <th data-field="precio">Precio</th>
+	                <th data-field="acciones">Acciones</th>
+	            </tr>
+	        </thead>
+	    </table>
+	    </div>
+	</div>
+</body>
+</html>
