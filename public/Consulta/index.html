@@ -40,10 +40,12 @@
 						        	field: "acciones",
 						        	formatter: (value, row, index) => {
 						        		return [
-						        			'<i class="glyphicon glyphicon-remove"></i> <i class="glyphicon glyphicon-pencil"></i>',
+						        			'<a class="remove" href="javascript:void(0)"><i class="glyphicon glyphicon-remove"></i></a>'+ 
+						        			'<a class="like"><i class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#exampleModal"></i></a>',
 						        		]
 						        	},
-						        	align: 'center'	
+						        	align: 'center',
+						        	events: operateEvents
 						        }],
 						        data: data.data
 						    });
@@ -52,10 +54,141 @@
                         
                     });
                 });
+
+
+
             };
 	var $table = $('#table');
 
+window.operateEvents = {
+        'click .like': function (e, value, row, index) {
+            alert('You click like action, row: ' + JSON.stringify(row));
+            $('#exampleModal').on('show.bs.modal', function (event) {
+			  var button = $(event.relatedTarget) // Button that triggered the modal
+			  var recipient = button.data('whatever') // Extract info from data-* attributes
+			  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+			  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+			  var modal = $(this)
+			  // modal.find('.modal-title').text('New message to ' + recipient)
+			  modal.find('.modal-body .tit').val(row.titulo)
+			  modal.find('.modal-body .des').val(row.descripcion)
+			  modal.find('.modal-body .ub').val(row.ubicacion)
+			  modal.find('.modal-body .sel').val(row.estado)
+			  modal.find('.modal-body .pre').val(row.precio)
+			})
 
+        },
+        'click .remove': function (e, value, row, index) {
+        	alert(row.id)
+        	var idd = row.id;
+
+        	var opcion = confirm("Desea Eliminar la Propiedad");
+		    if (opcion == true) {
+
+		    	$.get("http://localhost:8080/delete", {
+                        id: idd
+                        
+                    }, function (data) {
+                    	// alert("Registro Creado con Exito!!")
+                    	// alert()
+                        console.log("data")
+                        if (data.statusCode == 200) {
+                            console.log("el codigo es 200")
+                            alert("Registro Eliminado con Exito!!")
+                        }
+                        console.log(data)
+                    });
+		        $('#table').bootstrapTable('remove', {
+                field: 'id',
+                values: [row.id]
+            });
+			} 
+
+            
+        }
+    };
+
+
+
+
+</script>
+<script>
+
+
+
+
+	function myFunction() {
+    alert("presiono modal")
+    console.log("modal")
+    titulo = $("#titulo").val();
+                    descripcion = $("#descripcion").val();
+                    ubicacion = $("#ubicacion").val();
+                    estado = $("#select").val();
+                    precio = $("#precio").val();
+
+
+                    console.log(titulo)
+                    console.log(descripcion)
+                    console.log(ubicacion)
+                    console.log(estado)
+                    console.log(precio)
+
+                    $.get("http://localhost:8080/send", {
+                        titulo: titulo,
+                        descripcion: descripcion,
+                        ubicacion: ubicacion,
+                        estado: estado,
+                        precio: precio
+                    }, function (data) {
+                    	// alert("Registro Creado con Exito!!")
+                    	// alert()
+                        console.log("data")
+                        if (data.statusCode == 200) {
+                            console.log("el codigo es 200")
+                            alert("Registro Creado con Exito!!")
+                        }
+                        console.log(data)
+                    });
+}
+
+
+
+
+
+
+$("#submit").click(function () {
+	console.log("presione")
+                    titulo = $("#titulo").val();
+                    descripcion = $("#descripcion").val();
+                    ubicacion = $("#ubicacion").val();
+                    estado = $("#select").val();
+                    precio = $("#precio").val();
+
+
+                    console.log(titulo)
+                    console.log(descripcion)
+                    console.log(ubicacion)
+                    console.log(estado)
+                    console.log(precio)
+                    
+                    // $("#message").text("Sending E-mail...Please wait");
+                    $.get("http://localhost:8080/send", {
+                        titulo: titulo,
+                        descripcion: descripcion,
+                        ubicacion: ubicacion,
+                        estado: estado,
+                        precio: precio
+                    }, function (data) {
+                    	// alert("Registro Creado con Exito!!")
+                    	// alert()
+                        console.log("data")
+                        if (data.statusCode == 200) {
+                            console.log("el codigo es 200")
+                            alert("Registro Creado con Exito!!")
+                        }
+                        console.log(data)
+                    });
+                });
 </script>
 <head>
     <title>Consulta de Propiedades</title>
@@ -68,15 +201,136 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
 </head>
 <body>
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edición de Propiedad</h5>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Título:</label>
+            <input type="text" class="form-control tit" id="titulo">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Descripción:</label>
+            <textarea class="form-control des" id="descripcion"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Ubicación:</label>
+            <textarea class="form-control ub" id="ubicacion"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Estado:</label>
+            <div>
+						<select class="js-select2 sel" name="service" id="select">
+							<option value="venta">En Venta</option>
+							<option value="alquiler">En Alquiler</option>
+							<option value="vendida">Vendida</option>
+							<option value="alquilada">Alquilada</option>
+						</select>
+						<div class="dropDownSelect2"></div>
+					</div>
+          </div>
+
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Precio:</label>
+            <input type="number" class="form-control pre" id="precio">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="myFunction()">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+	<!--<div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Esto es un modal</h4>
+      </div>
+      <div class="modal-body">
+
+
+         <form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Registrar una Propiedad
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Título es requerido">
+					<label class="label-input100" for="Titulo">Título</label>
+					<input id="titulo" class="input100" type="text" name="Titulo" placeholder="Ingrese el Título...">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Descripción es requerida">
+					<label class="label-input100" for="Descripcion">Descripción</label>
+					<textarea id="descripcion" class="input100" name="Descripcion" placeholder="Ingrese la Descripción..."></textarea>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Ubicación es requerida">
+					<label class="label-input100" for="Ubicacion">Ubicación</label>
+					<textarea id="ubicacion" class="input100" name="Ubicacion" placeholder="Ingrese la Ubicación..."></textarea>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100">
+					<div class="label-input100">Estado</div>
+					<div>
+						<select class="js-select2" name="service" id="select">
+							<option value="venta">En Venta</option>
+							<option value="alquiler">En Alquiler</option>
+							<option value="vendida">Vendida</option>
+							<option value="alquilada">Alquilada</option>
+						</select>
+						<div class="dropDownSelect2"></div>
+					</div>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate="Precio es requerido">
+					<label class="label-input100" for="Precio">Precio</label>
+					<input id="precio" class="input100" type="number"  name="Precio" placeholder="Ingrese el Precio...">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<button class="contact100-form-btn" id="submit">
+						Editar
+					</button>
+				</div>
+			</form> 
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>-->
 	<div class="app">
 		<div class="container center">
+			<h1 class="title">Propiedades Registradas</h1>
 	        <table id="table" data-height="460">
 	        <thead>
 	            <tr>
-	                <th data-field="titulo">titulo</th>
-	                <th data-field="descripcion">descripcion</th>
-	                <th data-field="ubicacion">ubicacion</th>
-	                <th data-field="estado">estado</th>
+	                <th data-field="titulo">Título</th>
+	                <th data-field="descripcion">Descripción</th>
+	                <th data-field="ubicacion">Ubicación</th>
+	                <th data-field="estado">Estado</th>
 	                <th data-field="precio">Precio</th>
 	                <th data-field="acciones">Acciones</th>
 	            </tr>

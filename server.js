@@ -78,6 +78,26 @@ app.get('/received', function (req, res) {
 
 });
 
+app.get('/delete', function (req, res) {
+    console.log("recibi e id")
+    console.log(req.query.id)
+     
+    let v =  conn.db.any('delete FROM public.propiedad where id = $1', [req.query.id])
+    .then(function (data) {
+
+        console.log("la dataaaaaaaa de hoy")
+        console.log(data)
+        res.status(200).json({
+            statusCode: 200,
+            data: "eliminado"
+        });
+    })
+    .catch(function (err) {
+      res.status(500).send(err);
+    });
+
+});
+
 app.listen(8080, function (err) {
     if (err) {
         console.log(err);
