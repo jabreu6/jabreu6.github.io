@@ -3,7 +3,7 @@
 
 <script>
 
-
+	var idddd;
 	window.onload = function() {
                 $(document).ready(function () {
                     $.get("http://localhost:8080/received", {
@@ -45,7 +45,8 @@
 						        		]
 						        	},
 						        	align: 'center',
-						        	events: operateEvents
+						        	events: operateEvents,
+						        	silent: true
 						        }],
 						        data: data.data
 						    });
@@ -63,6 +64,8 @@
 window.operateEvents = {
         'click .like': function (e, value, row, index) {
             alert('You click like action, row: ' + JSON.stringify(row));
+
+            idddd = row.id;
             $('#exampleModal').on('show.bs.modal', function (event) {
 			  var button = $(event.relatedTarget) // Button that triggered the modal
 			  var recipient = button.data('whatever') // Extract info from data-* attributes
@@ -111,14 +114,14 @@ window.operateEvents = {
 
 
 
-</script>
-<script>
+
 
 
 
 
 	function myFunction() {
     alert("presiono modal")
+    alert(idddd)
     console.log("modal")
     titulo = $("#titulo").val();
                     descripcion = $("#descripcion").val();
@@ -133,12 +136,13 @@ window.operateEvents = {
                     console.log(estado)
                     console.log(precio)
 
-                    $.get("http://localhost:8080/send", {
+                    $.get("http://localhost:8080/update", {
                         titulo: titulo,
                         descripcion: descripcion,
                         ubicacion: ubicacion,
                         estado: estado,
-                        precio: precio
+                        precio: precio,
+                        id: idddd
                     }, function (data) {
                     	// alert("Registro Creado con Exito!!")
                     	// alert()
@@ -149,6 +153,58 @@ window.operateEvents = {
                         }
                         console.log(data)
                     });
+
+                    $('#exampleModal').modal('hide');
+                    $(document).ready(function () {
+                    $.get("http://localhost:8080/received", {
+                        titulo: "titulo"
+                        
+                    },function (data) {
+                        console.log("data")
+                        if (data.statusCode == 200) 
+                        {
+                            console.log("el codigo es 200")
+                            console.log(data)
+                            console.log(data.data.length);
+                            data.data = data.data.map(d => {
+                            	d.acciones = ''
+                            	return d
+                            })
+                            $('#table').bootstrapTable({
+						        columns: [{
+						        	field: "titulo",
+						        	align: 'center'
+						        },{
+						        	field: "descripcion",
+						        	align: 'center'
+						        },{
+						        	field: "ubicacion",
+						        	align: 'center'
+						        },{
+						        	field: "estado",
+						        	align: 'center'
+						        },{
+						        	field: "precio",
+						        	align: 'center'
+						        },{
+						        	field: "acciones",
+						        	formatter: (value, row, index) => {
+						        		return [
+						        			'<a class="remove" href="javascript:void(0)"><i class="glyphicon glyphicon-remove"></i></a>'+ 
+						        			'<a class="like"><i class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#exampleModal"></i></a>',
+						        		]
+						        	},
+						        	align: 'center',
+						        	events: operateEvents
+						        }],
+						        data: data.data
+						    });
+                            
+                        }
+                        
+                    });
+                });
+                $('#table').bootstrapTable('refresh');
 }
 
 

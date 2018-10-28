@@ -98,6 +98,43 @@ app.get('/delete', function (req, res) {
 
 });
 
+
+app.get('/update', function (req, res) {
+
+    console.log()
+    console.log()
+    console.log()
+    console.log()
+
+    console.log(req.query.titulo)
+    console.log(req.query.descripcion)
+    console.log(req.query.ubicacion)
+    console.log(req.query.estado)
+    console.log(req.query.precio)
+    console.log(req.query.id)
+    
+    
+    
+
+    conn.db.none('UPDATE public.propiedad SET titulo = $1, descripcion = $2, ubicacion = $3, estado = $4, precio = $5 '+
+                'WHERE id = $6 ', [req.query.titulo, req.query.descripcion, req.query.ubicacion, req.query.estado, req.query.precio, req.query.id])
+    .then(function (data) {
+      console.log('Hasta aqui 200');
+      res.status(200).json({
+        statusCode: 200,
+        data: "data"
+      });
+    })
+    .catch(function (err) {
+      console.log(err);
+      res.status(500).send(err);
+    });
+    
+    
+   
+
+});
+
 app.listen(8080, function (err) {
     if (err) {
         console.log(err);
